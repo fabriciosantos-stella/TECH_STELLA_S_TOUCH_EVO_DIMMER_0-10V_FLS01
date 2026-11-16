@@ -1,0 +1,22 @@
+"..\Output\Comm.obj",
+"..\Output\Slider.obj",
+"..\Output\Tasks.obj",
+"..\Output\Utils.obj",
+"..\Output\main.obj",
+"..\Output\HwInit.obj",
+"..\Output\Interrupts.obj",
+"..\Output\sc95f_pwm.obj",
+"..\Output\sc95f_option.obj",
+"..\Output\sc95f_gpio.obj",
+"..\Output\sc95f_btm.obj",
+"..\Output\sc95f_wdt.obj",
+"..\Output\sc95f_uart0.obj",
+"..\Output\sc95f_usci2.obj",
+"..\Output\TKDriver.obj",
+"C:\Temp\Repositorio\TECH_STELLA_S_TOUCH_EVO_DIMMER_PHASE_CUT\sinone\\Libs\TKDriver\C\SC95F8X7X_HighSensitive_Lib_Slide_L_V2.2.0.LIB",
+"..\Output\STARTUP.obj" 
+TO "..\Output\TOUCH_BOARD" 
+
+NOPRINT REMOVEUNUSED 
+CLASSES (CODE(C:0X100),
+CONST(C:0X100)) 

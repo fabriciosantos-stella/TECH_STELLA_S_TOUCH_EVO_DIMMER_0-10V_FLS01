@@ -26,4 +26,10 @@ typedef enum
 esp_err_t StatusLedInit(void);
 void StatusLedSetMode(STATUS_LED_MODE_t eMode);
 
+
+// Exported functions ----------------------------------------------------------
+esp_err_t StatusLedInit(void);
+void StatusLedSetMode(STATUS_LED_MODE_t eMode);
+
+
 #endif

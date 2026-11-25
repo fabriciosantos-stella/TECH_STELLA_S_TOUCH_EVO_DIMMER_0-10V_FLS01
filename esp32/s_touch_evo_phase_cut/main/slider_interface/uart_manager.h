@@ -21,6 +21,7 @@
 // Exported functions ----------------------------------------------------------
 esp_err_t UartManagerInit(void);
 esp_err_t UartManagerStart(void);
+
 esp_err_t UartManagerWriteParameters(const DEVICE_PARAMETERS_t *pxParameters);
 esp_err_t UartManagerReadParameters(void);
 bool UartManagerGetParameters(DEVICE_PARAMETERS_t *pxParameters);

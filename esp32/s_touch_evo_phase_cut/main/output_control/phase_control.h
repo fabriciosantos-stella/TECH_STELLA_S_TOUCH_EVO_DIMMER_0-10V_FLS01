@@ -3,7 +3,7 @@
  *
  *  Created on: Nov 10, 2026
  *      Author: Rodrigo Arnhold
- */
+ 
 
 #ifndef PHASE_CONTROL_H
 #define PHASE_CONTROL_H
@@ -28,4 +28,4 @@ typedef struct
 esp_err_t PhaseControlInit(void);
 esp_err_t PhaseControlGetData(PHASE_CONTROL_DATA_t *pxData);
 
-#endif
+#endif */

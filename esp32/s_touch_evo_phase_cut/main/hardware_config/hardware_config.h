@@ -24,26 +24,36 @@
 #define SLAVE_UART_RX_BUFFER_SIZE           256
 #define SLAVE_UART_TX_BUFFER_SIZE           0
 
-#define NTC_GPIO                            GPIO_NUM_3
+/* #define NTC_GPIO                            GPIO_NUM_3
 #define NTC_ADC_GPIO                        GPIO_NUM_3
 #define NTC_ADC_UNIT                        ADC_UNIT_1
 #define NTC_ADC_CHANNEL                     ADC_CHANNEL_3
 #define NTC_ADC_ATTENUATION                 ADC_ATTEN_DB_12
-#define NTC_ADC_BITWIDTH                    ADC_BITWIDTH_12
+#define NTC_ADC_BITWIDTH                    ADC_BITWIDTH_12 */
 
-#define ZERO_CROSSING_GPIO                  GPIO_NUM_18
-#define ZERO_CROSSING_INTR_TYPE             GPIO_INTR_ANYEDGE
+/* #define ZERO_CROSSING_GPIO                  GPIO_NUM_18
+#define ZERO_CROSSING_INTR_TYPE             GPIO_INTR_ANYEDGE */
 
-#define MOSFET_TRIGGER_GPIO                 GPIO_NUM_6
+/* #define MOSFET_TRIGGER_GPIO                 GPIO_NUM_6
 #define MOSFET_TRIGGER_ACTIVE_LEVEL         1
-#define MOSFET_TRIGGER_INACTIVE_LEVEL       0
+#define MOSFET_TRIGGER_INACTIVE_LEVEL       0 */
 
-#define INTERNAL_TEMP_RANGE_MIN_C           20
-#define INTERNAL_TEMP_RANGE_MAX_C           100
+/* #define INTERNAL_TEMP_RANGE_MIN_C           20
+#define INTERNAL_TEMP_RANGE_MAX_C           100 */
 
 // Exported enumerations -------------------------------------------------------
 // Exported types --------------------------------------------------------------
 // Exported macro --------------------------------------------------------------
 // Exported functions ----------------------------------------------------------
+
+
+// Saida 0-10V no GPIO 6
+#define DIMMER_0_10V_GPIO                   GPIO_NUM_6
+#define DIMMER_0_10V_PWM_TIMER              LEDC_TIMER_0
+#define DIMMER_0_10V_PWM_MODE               LEDC_LOW_SPEED_MODE
+#define DIMMER_0_10V_PWM_CHANNEL            LEDC_CHANNEL_0
+#define DIMMER_0_10V_PWM_FREQUENCY_HZ       1000
+#define DIMMER_0_10V_PWM_RESOLUTION_BITS    12
+#define DIMMER_SK1                            GPIO_NUM_7
 
 #endif

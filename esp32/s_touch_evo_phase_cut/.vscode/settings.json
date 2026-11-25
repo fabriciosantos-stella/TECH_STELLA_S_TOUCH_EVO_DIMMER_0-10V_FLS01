@@ -23,7 +23,7 @@
     "board/esp32c6-builtin.cfg"
   ],
   "idf.port": "detect",
-  "idf.currentSetup": "/home/rodri/esp/esp-idf",
+  "idf.currentSetup": "/home/fabriciosantos/esp/esp-idf",
   "idf.customExtraVars": {
     "IDF_TARGET": "esp32c6"
   },

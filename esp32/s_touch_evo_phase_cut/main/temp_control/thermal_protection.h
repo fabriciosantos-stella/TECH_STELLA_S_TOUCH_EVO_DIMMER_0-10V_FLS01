@@ -3,7 +3,7 @@
  *
  *  Created on: Nov 12, 2026
  *      Author: Rodrigo Arnhold
- */
+ 
 
 #ifndef THERMAL_PROTECTION_H
 #define THERMAL_PROTECTION_H
@@ -30,3 +30,4 @@ esp_err_t ThermalProtectionGetState(THERMAL_PROTECTION_STATE_t *peState);
 esp_err_t ThermalProtectionIsOutputAllowed(bool *pbAllowed);
 
 #endif
+*/

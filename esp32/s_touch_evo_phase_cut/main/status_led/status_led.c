@@ -26,10 +26,12 @@
 
 // Private typedef ---------------------------------------------------------------------------------------
 // Private enumerations ----------------------------------------------------------------------------------
+
 // Private variables -------------------------------------------------------------------------------------
-// Private function prototypes ---------------------------------------------------------------------------
 static STATUS_LED_MODE_t eStatusLedMode = STATUS_LED_MODE_NORMAL;
 static portMUX_TYPE StatusLedMux = portMUX_INITIALIZER_UNLOCKED;
+
+// Private function prototypes ---------------------------------------------------------------------------
 
 // Private functions -------------------------------------------------------------------------------------
 /*********************************************************************************************************
@@ -99,7 +101,7 @@ static void StatusLedTask(void *pvParameters)
                     }
                 }
 
-                u8TemperaturePhase = (u8TemperaturePhase + 1) % 4; // garante que o contador ficará sempre entre 0 e 3
+                u8TemperaturePhase = (u8TemperaturePhase + 1) % 4;
                 break;
             }
             default:
@@ -153,8 +155,8 @@ esp_err_t StatusLedInit(void)
 
 /*********************************************************************************************************
 * @brief    Configura o modo de piscadas do led de status
-* @fn       void StatusLedSetNormal(void)
-* @param    void        @brief void
+* @fn       void StatusLedSetMode(STATUS_LED_MODE_t eMode)
+* @param    eMode       @brief modo do LED
 * @return   void        @brief void
 *********************************************************************************************************/
 void StatusLedSetMode(STATUS_LED_MODE_t eMode)

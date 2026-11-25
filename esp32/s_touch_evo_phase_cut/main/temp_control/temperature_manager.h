@@ -3,7 +3,7 @@
  *
  *  Created on: Nov 12, 2026
  *      Author: Rodrigo Arnhold
- */
+ 
 
 #ifndef TEMPERATURE_MANAGER_H
 #define TEMPERATURE_MANAGER_H
@@ -30,3 +30,4 @@ esp_err_t TemperatureManagerInit(void);
 esp_err_t TemperatureManagerGetData(TEMPERATURE_DATA_t *pxData);
 
 #endif
+*/

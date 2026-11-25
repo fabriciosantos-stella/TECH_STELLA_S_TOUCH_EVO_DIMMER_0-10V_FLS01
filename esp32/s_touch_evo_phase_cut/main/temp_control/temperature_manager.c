@@ -4,7 +4,7 @@
  *  Created on: Nov 12, 2026
  *      Author: rodrigo.arnhold
  *
- */
+ 
 
 // Includes ----------------------------------------------------------------------------------------------
 #include "temperature_manager.h"
@@ -54,12 +54,12 @@ static esp_err_t TemperatureManagerReadNtc(int *piRawValue);
 static esp_err_t TemperatureManagerConvertNtcToCelsius(int iRawValue, float *pfTemperature);
 
 // Private functions -------------------------------------------------------------------------------------
-/*********************************************************************************************************
+*********************************************************************************************************
 * @brief    Realiza a leitura e média das amostras do ADC
 * @fn       static esp_err_t TemperatureManagerReadNtc(int *piRawValue)
 * @param    piRawValue    @brief Ponteiro para armazenar o resultado
 * @return   esp_err_t     @brief status da resposta, sucesso ou falha
-*********************************************************************************************************/
+********************************************************************************************************
 static esp_err_t TemperatureManagerReadNtc(int *piRawValue)
 {
     int iSample;
@@ -87,12 +87,12 @@ static esp_err_t TemperatureManagerReadNtc(int *piRawValue)
     return ESP_OK;
 }
 
-/*********************************************************************************************************
+*********************************************************************************************************
 * @brief    Tarefa de monitoramento periódico das temperaturas
 * @fn       static void TemperatureManagerTask(void *pvParameters)
 * @param    pvParameters   @brief Parâmetros da tarefa
 * @return   void    @brief void
-*********************************************************************************************************/
+********************************************************************************************************
 static void TemperatureManagerTask(void *pvParameters)
 {
     (void)pvParameters;
@@ -143,12 +143,12 @@ static void TemperatureManagerTask(void *pvParameters)
     }
 }
 
-/*********************************************************************************************************
+*********************************************************************************************************
 * @brief    Inicializa os sensores e cria a tarefa de monitoramento
 * @fn       esp_err_t TemperatureManagerInit(void) 
 * @param    void    @brief void
 * @return   esp_err_t     @brief status da resposta, sucesso ou falha
-*********************************************************************************************************/
+********************************************************************************************************
 esp_err_t TemperatureManagerInit(void)
 {
     esp_err_t xError = ESP_OK;
@@ -253,12 +253,12 @@ esp_err_t TemperatureManagerInit(void)
     return xError;
 }
 
-/*********************************************************************************************************
+*********************************************************************************************************
 * @brief    Retorna os últimos dados adquiridos pelos sensores
 * @fn       esp_err_t TemperatureManagerGetData(TEMPERATURE_DATA_t *pxData)
 * @param    pxData    @brief Ponteiro para a estrutura de dados
 * @return   esp_err_t   @brief status da resposta, sucesso ou falha
-*********************************************************************************************************/
+********************************************************************************************************
 esp_err_t TemperatureManagerGetData(TEMPERATURE_DATA_t *pxData)
 {
     if (pxData == NULL)
@@ -283,12 +283,12 @@ esp_err_t TemperatureManagerGetData(TEMPERATURE_DATA_t *pxData)
     return ESP_OK;
 }
 
-/*********************************************************************************************************
+*********************************************************************************************************
 * @brief    Converte a leitura ADC do NTC para graus Celsius
 * @param    iRawValue       @brief Valor bruto do ADC
 * @param    pfTemperature  @brief Ponteiro para armazenar a temperatura
 * @return   esp_err_t   @brief status da resposta, sucesso ou falha
-*********************************************************************************************************/
+********************************************************************************************************
 static esp_err_t TemperatureManagerConvertNtcToCelsius(int iRawValue, float *pfTemperature)
 {
     int iVoltageMv;
@@ -323,3 +323,4 @@ static esp_err_t TemperatureManagerConvertNtcToCelsius(int iRawValue, float *pfT
 
     return ESP_OK;
 }
+*/

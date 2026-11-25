@@ -31,7 +31,7 @@
 #define DEVICE_DEFAULT_PHASE_CUT_MODE       0
 
 #define DEVICE_DIM_LEVEL_MIN                0
-#define DEVICE_DIM_LEVEL_MAX                10
+#define DEVICE_DIM_LEVEL_MAX                11
 
 #define PARAMETER_TASK_STACK_SIZE           3072
 #define PARAMETER_TASK_PRIORITY             3

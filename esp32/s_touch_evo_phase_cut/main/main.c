@@ -6,100 +6,168 @@
  *
  */
 
-// Includes ----------------------------------------------------------------------------------------------
 #include "esp_err.h"
 #include "esp_log.h"
+
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+
+#include "hardware_config.h"
 #include "status_led.h"
 #include "storage_manager.h"
 #include "uart_manager.h"
-#include "temperature_manager.h"
-#include "thermal_protection.h"
-#include "phase_control.h"
+#include "output_control.h"
 
-// Private define ----------------------------------------------------------------------------------------
-// Private typedef ---------------------------------------------------------------------------------------
-// Private enumerations ----------------------------------------------------------------------------------
-// Private variables -------------------------------------------------------------------------------------
 static const char *TAG = "APP_MAIN";
 
-// Private function prototypes ---------------------------------------------------------------------------
-// Private functions -------------------------------------------------------------------------------------
-/*********************************************************************************************************
-* @brief    Função principal do sistema
-* @fn       void app_main(void)
-* @param    void        @brief void
-* @return   void        @brief void
-*********************************************************************************************************/
+static void DimmerTask(void *pvParameters)
+{
+    (void)pvParameters;
+    DEVICE_PARAMETERS_t xParams;
+    static uint8_t u8LastPercent = 0xFF;
+    static uint8_t u8LastRelayState = 0xFF;
+    static uint8_t u8LastPhaseMode = 0xFF;
+
+
+    while (1)
+    {
+
+        if (UartManagerGetParameters(&xParams))
+        {
+
+            static uint8_t u8LastState = 0xFF;
+            static uint8_t u8LastDim = 0xFF;
+            static uint8_t u8LastPhase = 0xFF;
+
+            if ((xParams.u8DeviceOutputState != u8LastState) ||
+                (xParams.u8DimLevel != u8LastDim) ||
+                (xParams.u8PhaseCutMode != u8LastPhase))
+            {
+                ESP_LOGI(TAG, "Params: state=%u dim=%u min=%u max=%u phase=%u",
+                xParams.u8DeviceOutputState,
+                xParams.u8DimLevel,
+                xParams.u8MinDimLevel,
+                xParams.u8MaxDimLevel,
+                xParams.u8PhaseCutMode);
+
+                u8LastState = xParams.u8DeviceOutputState;
+                u8LastDim = xParams.u8DimLevel;
+                u8LastPhase = xParams.u8PhaseCutMode;
+            }
+
+
+            uint8_t u8Percent = 0;
+
+            if (xParams.u8DeviceOutputState != 0)
+            {
+                // Slider 1..11 -> 10..100%
+                u8Percent = (((xParams.u8DimLevel - 1) * 99) / 10) + 1;
+
+                if (u8Percent > 100)
+                {
+                    u8Percent = 100;
+                }
+            }
+
+            OutputControlSetPercent(u8Percent);
+
+            if (u8Percent != u8LastPercent)
+            {
+                ESP_LOGI(TAG, "Dimmer: %u%% (raw=%u)", u8Percent, xParams.u8DimLevel);
+                u8LastPercent = u8Percent;
+            }
+
+            
+            uint8_t u8RelayState = (xParams.u8DeviceOutputState == 0) ? 1 : 0;
+
+            if ((u8RelayState != u8LastRelayState) ||
+                (xParams.u8PhaseCutMode != u8LastPhaseMode))
+            {
+                if (xParams.u8PhaseCutMode == 0)
+                {
+                    OutputControlSetSK1(u8RelayState);
+                    OutputControlSetDimmerMode(0);
+                }
+                else
+                {
+                    OutputControlSetDimmerMode(!u8RelayState);
+                    OutputControlSetSK1(0);
+                }
+
+                u8LastRelayState = u8RelayState;
+                u8LastPhaseMode = xParams.u8PhaseCutMode;
+            }
+
+
+        }
+        else
+        {
+            ESP_LOGW(TAG, "Falha ao ler parametros do escravo");
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+}
+
 void app_main(void)
 {
     esp_err_t xError;
 
-    ESP_LOGI(TAG, "Initializing application");
-    xError = TemperatureManagerInit(); // Inicializa aquisição das temperaturas
+    ESP_LOGI(TAG, "Inicializando aplicacao");
 
+    xError = StatusLedInit();
     if (xError != ESP_OK)
     {
-        ESP_LOGE("APP_MAIN", "TemperatureManager initialization failed");
-        return;
-    }
-    
-    xError = StatusLedInit(); // Inicializa LED de status
-
-    if (xError != ESP_OK)
-    {
-        ESP_LOGE("APP_MAIN", "StatusLed initialization failed");
+        ESP_LOGE(TAG, "StatusLed init falhou: %s", esp_err_to_name(xError));
         return;
     }
 
-    xError = ThermalProtectionInit(); // Inicializa proteção térmica
-
+    xError = OutputControlInit();
     if (xError != ESP_OK)
     {
-        ESP_LOGE("APP_MAIN", "ThermalProtection initialization failed");
+        ESP_LOGE(TAG, "OutputControl init falhou: %s", esp_err_to_name(xError));
         return;
     }
+    OutputControlSetSK1(0);
 
-    xError = PhaseControlInit(); // Inicializa o controle de corte de fase
+    OutputControlSetDimmerMode(0);
 
+
+    xError = StorageManagerInit();
     if (xError != ESP_OK)
     {
-        ESP_LOGE(TAG, "Phase Control initialization failed: %s", esp_err_to_name(xError));
-        return;
-    }
-
-    xError = StorageManagerInit(); // inicializa o gerenciador de parametros do dispositivo
-
-    if (xError != ESP_OK)
-    {
-        ESP_LOGE(TAG, "Storage Manager initialization failed: %s", esp_err_to_name(xError));
-        StatusLedSetMode(STATUS_LED_SLAVE_COMM_ERROR);        
-        return;
-    }
- 
-    xError = UartManagerInit(); // inicializa a interface uart
-
-    if (xError != ESP_OK)
-    {
-        ESP_LOGE(TAG, "UART Manager initialization failed: %s", esp_err_to_name(xError));
+        ESP_LOGE(TAG, "StorageManager init falhou: %s", esp_err_to_name(xError));
         StatusLedSetMode(STATUS_LED_SLAVE_COMM_ERROR);
         return;
     }
 
-    xError = StorageManagerSyncWithSlave(); // enfileira o envio dos parametros retentivos para envio para o escravo
-
+    xError = UartManagerInit();
     if (xError != ESP_OK)
     {
-        ESP_LOGE(TAG, "Initial parameter synchronization failed");
+        ESP_LOGE(TAG, "UART Manager init falhou: %s", esp_err_to_name(xError));
+        StatusLedSetMode(STATUS_LED_SLAVE_COMM_ERROR);
         return;
     }
 
-    xError = UartManagerStart(); // inicia a tarefa de comunicação entre mestre e escravo pela uart
-
+    xError = StorageManagerSyncWithSlave();
     if (xError != ESP_OK)
     {
-        ESP_LOGE(TAG, "UART Manager task initialization failed");
+        ESP_LOGE(TAG, "Sincronizacao inicial falhou: %s", esp_err_to_name(xError));
         return;
     }
-    
-    ESP_LOGI(TAG, "Application initialized successfully");
+
+    xError = UartManagerStart();
+    if (xError != ESP_OK)
+    {
+        ESP_LOGE(TAG, "UART Manager start falhou: %s", esp_err_to_name(xError));
+        return;
+    }
+
+    if (xTaskCreate(DimmerTask, "DimmerTask", 2048, NULL, 3, NULL) != pdPASS)
+    {
+        ESP_LOGE(TAG, "Falha ao criar DimmerTask");
+        return;
+    }
+
+    ESP_LOGI(TAG, "Aplicacao inicializada com sucesso");
 }

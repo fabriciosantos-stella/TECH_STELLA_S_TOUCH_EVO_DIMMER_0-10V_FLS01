@@ -4,7 +4,7 @@
  *  Created on: Nov 10, 2026
  *      Author: rodrigo.arnhold
  *
- */
+ 
 
 // Includes ----------------------------------------------------------------------------------------------
 #include "phase_control.h"
@@ -49,12 +49,12 @@ static TaskHandle_t xPhaseControlTaskHandle = NULL;
 static void PhaseControlTask(void *pvParameters);
 
 // Private functions -------------------------------------------------------------------------------------
-/*********************************************************************************************************
+*********************************************************************************************************
 * @brief    Função que trata a interrução de zero crossing e mede o periodo do semiciclo
 * @fn       static void PhaseControlZeroCrossingISR(void *pvArgument)
 * @param    *pvArgument      @brief ponteiro para o argumento da interrupção
 * @return   void            @brief void
-*********************************************************************************************************/
+********************************************************************************************************
 static void PhaseControlZeroCrossingISR(void *pvArgument)
 {
     int64_t s64NowUs = esp_timer_get_time();
@@ -132,12 +132,12 @@ static void PhaseControlZeroCrossingISR(void *pvArgument)
     }
 }
 
-/*********************************************************************************************************
+*********************************************************************************************************
 * @brief    Função de inicialização e configuração do pino de interrupção do zero-crossing
 * @fn       esp_err_t PhaseControlInit(void)
 * @param    void      @brief void
 * @return   esp_err_t @brief status da estrutura de erros do sistema
-*********************************************************************************************************/
+********************************************************************************************************
 esp_err_t PhaseControlInit(void)
 {
     esp_err_t eResult;
@@ -228,12 +228,12 @@ esp_err_t PhaseControlInit(void)
     return ESP_OK;
 }
 
-/*********************************************************************************************************
+*********************************************************************************************************
 * @brief    Função de inicialização e configuração do pino de interrupção do zero-crossing
 * @fn       esp_err_t PhaseControlGetData(PHASE_CONTROL_DATA_t *pxData)
 * @param    *pxData        @brief ponteiro para a estrutura de parametros do phase control
 * @return   esp_err_t      @brief status da estrutura de erros do sistema
-*********************************************************************************************************/
+********************************************************************************************************
 esp_err_t PhaseControlGetData(PHASE_CONTROL_DATA_t *pxData)
 {
     if (pxData == NULL)
@@ -266,12 +266,12 @@ esp_err_t PhaseControlGetData(PHASE_CONTROL_DATA_t *pxData)
     return ESP_OK;
 }
 
-/*********************************************************************************************************
+*********************************************************************************************************
 * @brief    Tarefa responsável pelo processamento da frequência da rede e atualização da telemetria
 * @fn       static void PhaseControlTask(void *pvParameters)
 * @param    pvParameters    @brief Ponteiro para parâmetros da tarefa
 * @return   void            @brief void
-*********************************************************************************************************/
+********************************************************************************************************
 static void PhaseControlTask(void *pvParameters)
 {
     (void)pvParameters;
@@ -291,3 +291,4 @@ static void PhaseControlTask(void *pvParameters)
         }
     }
 }
+*/
